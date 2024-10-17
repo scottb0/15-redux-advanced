@@ -80,5 +80,35 @@ export const sendCartData = (cartContents) => {
     };
 }
 
+export const fetchCartData = () => {
+    return async (dispatch) => {
+        dispatch(uiSettingsActions.setNotification({
+            status: 'pending',
+            title: 'Loading...',
+            message: 'Fetching cart data!'
+        }));
+
+        try {
+            const response = await fetch(DB_URL, {method: 'GET'});
+            if (!response.ok) {
+                throw new Error('Requesting cart data failed.');
+            }
+            const cartData = await response.json();
+            dispatch(cartActions.replaceCart(cartData));
+            dispatch(uiSettingsActions.setNotification({
+                status: 'success',
+                title: 'Success!',
+                message: 'Fetched cart data successfully!'
+            }))
+        } catch (error) {
+            dispatch(uiSettingsActions.setNotification({
+                status: 'error',
+                title: 'Error!',
+                message: 'Fetching cart data failed!'
+            }));
+        }
+    };
+};
+
 export default cartSlice.reducer;
 export const cartActions = cartSlice.actions;
