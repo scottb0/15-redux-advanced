@@ -1,13 +1,12 @@
-import {configureStore} from '@reduxjs/toolkit';
 import {createSlice} from '@reduxjs/toolkit';
 
-const initialAuthState = {
+const initialCartState = {
     cartContents: []
 };
 
 const cartSlice = createSlice({
     name: 'cart',
-    initialState: initialAuthState,
+    initialState: initialCartState,
     reducers: {
         addItem(state, action) {
             const existingItemIndex = state.cartContents.findIndex(item => item.id === action.payload.id);
@@ -26,6 +25,7 @@ const cartSlice = createSlice({
         decQuantity(state, action) {
             const existingItemIndex = state.cartContents.findIndex(item => item.id === action.payload.id);
             if (state.cartContents[existingItemIndex].quantity <= 1) {
+                // splice works with redux toolkit otherwise would do cart = cart.filter(...!=id...)
                 state.cartContents.splice(existingItemIndex, 1);
             }
             else {
@@ -35,10 +35,10 @@ const cartSlice = createSlice({
     }
 });
 
-const store = configureStore({
-    reducer: cartSlice.reducer
-});
+const getTotalCartPrice = (cartContents) => {
+    return cartContents.reduce(
+        (total, item) => total + item.price * item.quantity, 0);
+}
 
-
-export default store;
+export default cartSlice.reducer;
 export const cartActions = cartSlice.actions;

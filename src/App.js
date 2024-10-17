@@ -1,17 +1,17 @@
 import Cart from './components/Cart/Cart';
 import Layout from './components/Layout/Layout';
 import Products from './components/Shop/Products';
-import {Provider} from 'react-redux';
-import store from './store/cart';
+import {Provider, useSelector} from 'react-redux';
 
 function App() {
+
+    const shouldDisplayCart = useSelector(state => state.uiSettings.displayCart);
+
   return (
-    <Provider store={store}>
-        <Layout>
-          <Cart />
-          <Products />
-        </Layout>
-    </Provider>
+    <Layout>
+        { shouldDisplayCart && <Cart /> }
+      <Products />
+    </Layout>
   );
 }
 
