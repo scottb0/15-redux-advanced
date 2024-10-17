@@ -1,4 +1,7 @@
 import {createSlice} from '@reduxjs/toolkit';
+import {uiSettingsActions} from './uiSettings';
+
+const DB_URL = 'https://example-project-e28b4-default-rtdb.europe-west1.firebasedatabase.app/cart.json';
 
 const initialCartState = {
     cartContents: []
@@ -41,6 +44,40 @@ const cartSlice = createSlice({
 const getTotalCartPrice = (cartContents) => {
     return cartContents.reduce(
         (total, item) => total + item.price * item.quantity, 0);
+}
+
+export const sendCartData = (cartContents) => {
+    return async (dispatch) => {
+        dispatch(uiSettingsActions.setNotification({
+            status: 'pending',
+            title: 'Sending...',
+            message: 'Sending cart data!'
+        }));
+
+        try {
+            const response = await fetch(DB_URL,
+                {
+                    method: 'PUT',
+                    body: JSON.stringify(cartContents),
+                });
+            if (!response.ok) {
+                throw new Error('Sending cart data failed.');
+            }
+            await response.json();
+            dispatch(uiSettingsActions.setNotification({
+                status: 'success',
+                title: 'Success!',
+                message: 'Sent cart data successfully!'
+            }))
+        }
+        catch (error) {
+            dispatch(uiSettingsActions.setNotification({
+                status: 'error',
+                title: 'Error!',
+                message: 'Sending cart data failed!'
+            }));
+        }
+    };
 }
 
 export default cartSlice.reducer;
