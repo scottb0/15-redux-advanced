@@ -8,6 +8,9 @@ const cartSlice = createSlice({
     name: 'cart',
     initialState: initialCartState,
     reducers: {
+        replaceCart(state, action) {
+            state.cartContents = action.payload.cartContents;
+        },
         addItem(state, action) {
             const existingItemIndex = state.cartContents.findIndex(item => item.id === action.payload.id);
             if (existingItemIndex !== -1) {
