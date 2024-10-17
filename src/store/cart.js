@@ -15,7 +15,7 @@ const cartSlice = createSlice({
                 state.cartContents[existingItemIndex].quantity += 1;
             } else {
                 // If the item does not exist, add it as a new item
-                state.cartContents.push({ id: action.payload.id, quantity: 1, price: action.payload.price});
+                state.cartContents.push({ id: action.payload.id, title: action.payload.title, quantity: 1, price: action.payload.price});
             }
         },
         incQuantity(state, action) {

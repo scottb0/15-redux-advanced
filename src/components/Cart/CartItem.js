@@ -3,7 +3,7 @@ import {useDispatch} from 'react-redux';
 import {cartActions} from '../../store/cart'
 
 const CartItem = (props) => {
-  const { title, quantity, total, price } = props.item;
+  const { id, title, quantity, total, price } = props.item;
 
     const dispatch = useDispatch();
 
@@ -21,8 +21,8 @@ const CartItem = (props) => {
           x <span>{quantity}</span>
         </div>
         <div className={classes.actions}>
-          <button onClick={() => dispatch(cartActions.decQuantity({id: title}))}>-</button>
-          <button onClick={() => dispatch(cartActions.incQuantity({id: title}))}>+</button>
+          <button onClick={() => dispatch(cartActions.decQuantity({id}))}>-</button>
+          <button onClick={() => dispatch(cartActions.incQuantity({id}))}>+</button>
         </div>
       </div>
     </li>
