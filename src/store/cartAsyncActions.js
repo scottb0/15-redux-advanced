@@ -51,7 +51,7 @@ export const fetchCartData = () => {
                 throw new Error('Requesting cart data failed.');
             }
             const cartData = await response.json();
-            dispatch(cartActions.replaceCart(cartData));
+            dispatch(cartActions.replaceCart(cartData || {cartContents: []}));
             dispatch(uiSettingsActions.setNotification({
                 status: 'success',
                 title: 'Success!',
