@@ -4,8 +4,7 @@ import Products from './components/Shop/Products';
 import {useDispatch, useSelector} from 'react-redux';
 import {useEffect, useRef} from 'react';
 import Notification from './components/UI/Notification';
-import {uiSettingsActions} from './store/uiSettings';
-import {cartActions, fetchCartData, sendCartData} from './store/cart';
+import {fetchCartData, sendCartData} from './store/cartAsyncActions';
 
 function App() {
 
@@ -30,7 +29,7 @@ function App() {
 
         dispatch(sendCartData(cart));
 
-    }, [cart]);
+    }, [cart, dispatch]);
 
   return (
       <>
