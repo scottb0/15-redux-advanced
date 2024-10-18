@@ -1,7 +1,8 @@
 import {createSlice} from '@reduxjs/toolkit';
 
 const initialCartState = {
-    cartContents: []
+    cartContents: [],
+    updated: false
 };
 
 const cartSlice = createSlice({
@@ -20,10 +21,12 @@ const cartSlice = createSlice({
                 // If the item does not exist, add it as a new item
                 state.cartContents.push({ id: action.payload.id, title: action.payload.title, quantity: 1, price: action.payload.price});
             }
+            state.updated = true;
         },
         incQuantity(state, action) {
             const existingItemIndex = state.cartContents.findIndex(item => item.id === action.payload.id);
             state.cartContents[existingItemIndex].quantity += 1;
+            state.updated = true;
         },
         decQuantity(state, action) {
             const existingItemIndex = state.cartContents.findIndex(item => item.id === action.payload.id);
@@ -34,6 +37,7 @@ const cartSlice = createSlice({
             else {
                 state.cartContents[existingItemIndex].quantity -= 1;
             }
+            state.updated = true;
         }
     }
 });

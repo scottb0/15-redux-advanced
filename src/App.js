@@ -10,26 +10,23 @@ function App() {
 
     const shouldDisplayCart = useSelector(state => state.uiSettings.displayCart);
     const notification = useSelector(state => state.uiSettings.notification);
-    const cart = useSelector(state => state.cart);
+    const cartContents = useSelector(state => state.cart.cartContents);
+    const cartUpdated = useSelector(state => state.cart.updated);
     const dispatch = useDispatch();
     const hasInitialised = useRef(false);
-    const hasRespondedToFetch = useRef(false);
+
+    useEffect( () => {
+        dispatch(fetchCartData());
+    }, []);
 
     useEffect( () => {
         if (!hasInitialised.current) {
             hasInitialised.current = true;
-            dispatch(fetchCartData());
-            return;
         }
-
-        if(!hasRespondedToFetch.current) {
-            hasRespondedToFetch.current = true;
-            return;
+        else if(cartUpdated) {
+            dispatch(sendCartData({cartContents: cartContents}));
         }
-
-        dispatch(sendCartData(cart));
-
-    }, [cart, dispatch]);
+    }, [cartContents, dispatch]);
 
   return (
       <>
